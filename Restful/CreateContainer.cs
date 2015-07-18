@@ -13,11 +13,11 @@ namespace Restful
     {
         string _accountName;
         string _accountKey;
-        string _listContainerUrl = "https://danielfiletest.blob.core.windows.net/jambor?restype=container";
+        string _listContainerUrl = "https://danielfiletest.blob.core.windows.net/jambor1?restype=container";
         string _xdate = DateTime.UtcNow.ToString("R");
         string _xversion = "2011-08-18";
         string _method = "PUT";
-        string _containerName = "jambor";
+        string _containerName = "jambor1";
 
         public CreateContainer(string accountKey,string accountName)
         {
@@ -30,8 +30,9 @@ namespace Restful
             request.Method = _method;
             request.Headers.Add("x-ms-date", _xdate);
             request.Headers.Add("x-ms-version", _xversion);
+            request.Headers.Add("x-ms-blob-public-access","container");
             request.ContentLength = 0;
-            string headerresource = string.Format("x-ms-date:{0}\nx-ms-version:{1}", _xdate, _xversion);
+            string headerresource = string.Format("x-ms-blob-public-access:{2}\nx-ms-date:{0}\nx-ms-version:{1}", _xdate, _xversion,"container");
             string urlresource = string.Format("/{0}/{1}\nrestype:container", _accountName, _containerName);
             string stringtosign = string.Format("{0}\n\n\n{1}\n\n\n\n\n\n\n\n\n{2}\n{3}", _method,0, headerresource, urlresource);
             string authorization = SignToString(stringtosign);
