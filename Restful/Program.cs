@@ -19,8 +19,12 @@ namespace Restful
             listContainer listContainer = new listContainer(accountName, accountKey,"mycontainer");
             listContainer.HttpListContainer();
 
-            CreateContainer createContainer = new CreateContainer(accountName, accountKey,"jambor2");
-            createContainer.CallCreateContainer();
+            //CreateContainer createContainer = new CreateContainer(accountName, accountKey,"jambor2");
+            //createContainer.CallCreateContainer();
+
+
+            CreateQueue createContainer = new CreateQueue(accountName, accountKey, "jambor2");
+            createContainer.CallCreateQueue();
         }
 
        
