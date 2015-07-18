@@ -20,6 +20,7 @@ namespace Restful
         string _xversion;
         string _method;
         string _queueName;
+        string _contentType;
 
         public PutMessageToQueue(string accountName, string accountKey, string queueName)
         {
@@ -32,7 +33,8 @@ namespace Restful
                 this._queueName,0,3600*24*5);
             this._method = "POST";
             this._xdate = DateTime.UtcNow.ToString("R");
-            this._xversion = "2014-02-14";
+            this._xversion = "2011-08-18";
+            this._contentType = "text/xml";
         }
         public void SendMessage()
         {
@@ -40,28 +42,37 @@ namespace Restful
             request.Method = _method;
             request.Headers.Add("x-ms-date", _xdate);
             request.Headers.Add("x-ms-version", _xversion);
+           // request.ContentType = _contentType;
+            string messagecontent = Convert.ToBase64String(Encoding.UTF8.GetBytes("hello jambor"));
+
+            Encoding.UTF8.GetString(Convert.FromBase64String(messagecontent));
 
             string requestContent = "<QueueMessage>" +
-                                      "<MessageText>hello world</MessageText>" +
+                                      "<MessageText>"+messagecontent+"</MessageText>" +
                                   "</QueueMessage>";
             // request.GetRequestStream()
-            string data=System.Web.HttpUtility.UrlEncode(requestContent);
-            byte[] bytes=Encoding.UTF8.GetBytes(data);
-            request.ContentLength = bytes.Length;
-            using (var stream = request.GetRequestStream())
-            {
-                StreamWriter writer = new StreamWriter(stream);
-                writer.Write(Convert.ToBase64String( Encoding.UTF8.GetBytes(System.Web.HttpUtility.UrlEncode(requestContent))));
-            }
+            byte[] bytes = Encoding.UTF8.GetBytes( requestContent);
+           // byte[] bytes=Encoding.UTF8.GetBytes(data);
+            
             string headerresource = string.Format("x-ms-date:{0}\nx-ms-version:{1}", _xdate, _xversion);
             string urlresource = string.Format("/{0}/{1}/messages\nmessagettl:{2}\nvisibilitytimeout:0",
                 _accountName, _queueName,3600*24*5);
-            string stringtosign = string.Format("{0}\n\n\n{1}\n\n\n\n\n\n\n\n\n{2}\n{3}", _method, bytes.Length, headerresource, urlresource);
+            string stringtosign = string.Format("{0}\n\n\n{1}\n\n\n\n\n\n\n\n\n{2}\n{3}",
+                _method, bytes.Length, headerresource, urlresource);
             string authorization = SignToString(stringtosign);
 
           
 
             request.Headers.Add("Authorization", authorization);
+
+
+            request.ContentLength = bytes.Length;
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(bytes, 0, bytes.Length);
+              
+               // writer.Write(Convert.ToBase64String(Encoding.UTF8.GetBytes(System.Web.HttpUtility.UrlEncode(requestContent))));
+            }
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
                 // Stream stream = response.GetResponseStream();

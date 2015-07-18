@@ -22,9 +22,14 @@ namespace Restful
             //CreateContainer createContainer = new CreateContainer(accountName, accountKey,"jambor2");
             //createContainer.CallCreateContainer();
 
+            /*****************create container**************/
+            //CreateQueue createContainer = new CreateQueue(accountName, accountKey, "jambor2");
+            //createContainer.CallCreateQueue();
 
-            CreateQueue createContainer = new CreateQueue(accountName, accountKey, "jambor2");
-            createContainer.CallCreateQueue();
+            /*****************put message**************/
+            PutMessageToQueue putMessage = new PutMessageToQueue(accountName, accountKey, "jambor2");
+            putMessage.SendMessage();
+
         }
 
        
