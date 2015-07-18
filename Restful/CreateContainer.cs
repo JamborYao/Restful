@@ -13,16 +13,24 @@ namespace Restful
     {
         string _accountName;
         string _accountKey;
-        string _listContainerUrl = "https://danielfiletest.blob.core.windows.net/jambor1?restype=container";
-        string _xdate = DateTime.UtcNow.ToString("R");
-        string _xversion = "2011-08-18";
-        string _method = "PUT";
-        string _containerName = "jambor1";
+        string _listContainerUrl;
+        string _xdate;
+        string _xversion;
+        string _method;
+        string _containerName;
 
-        public CreateContainer(string accountKey,string accountName)
+        public CreateContainer(string accountName,string accountKey,string containerName)
         {
-            this._accountKey = accountKey;
             this._accountName = accountName;
+            this._accountKey = accountKey;
+            this._containerName = containerName;
+            this._listContainerUrl = string.Format(
+                "https://{0}.blob.core.windows.net/{1}?restype=container",
+                this._accountName,
+                this._containerName);
+            this._method = "PUT";
+            this._xdate = DateTime.UtcNow.ToString("R");
+            this._xversion = "2014-02-14";
         }
         public void CallCreateContainer()
         {

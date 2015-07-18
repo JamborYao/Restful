@@ -16,10 +16,10 @@ namespace Restful
         {
             string accountName = "danielfiletest";
             string accountKey = ConfigurationManager.AppSettings.Get(accountName);
-            listContainer listContainer = new listContainer(accountName, accountKey);
+            listContainer listContainer = new listContainer(accountName, accountKey,"mycontainer");
             listContainer.HttpListContainer();
 
-            CreateContainer createContainer = new CreateContainer(accountKey, accountName);
+            CreateContainer createContainer = new CreateContainer(accountName, accountKey,"jambor2");
             createContainer.CallCreateContainer();
         }
 
