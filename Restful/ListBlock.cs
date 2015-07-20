@@ -22,7 +22,7 @@ namespace Restful
         string _blobName;
 
         public ListBlock(string accountName, string accountKey, string containerName,string blobName)
-        {
+        { 
             this._accountName = accountName;
             this._accountKey = accountKey;
             this._containerName = containerName;
