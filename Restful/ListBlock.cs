@@ -52,7 +52,7 @@ namespace Restful
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
                 var stream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(stream);
+                StreamReader reader = new StreamReader(stream); 
                 string content = reader.ReadToEnd();
             }
         }
